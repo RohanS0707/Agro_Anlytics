@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
+import os
+import dj_database_url  # also needed usually
+from decouple import config 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -174,3 +178,7 @@ print("✅ Loaded Weather API Key:", WEATHER_API_KEY)
 
 
 
+
+if os.getenv('RENDER') == 'true':
+    import django_heroku
+    django_heroku.settings(locals())
