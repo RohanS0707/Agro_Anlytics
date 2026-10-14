@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%yj=62xjjh=(hab!62n%my2e0#a449my0g(m)#b#iya6d5!i7z'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='dev-only-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -139,8 +139,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Use Gmail SMTP, or another provider
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'rohanshinde0702@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'ckse eubd ysnh vrsu'  # Use an app password, not your main password
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Default primary key field type
@@ -153,28 +153,8 @@ LOGIN_REDIRECT_URL = 'user_dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 
 
-import os
-from dotenv import load_dotenv  # type: ignore
-from pathlib import Path
-
-# Get the base directory (where manage.py is located)
-BASE_DIR = Path(__file__).resolve().parent.parent  
-
-# Construct the full path to .env
-env_path = os.path.join(BASE_DIR, '.env')
-
-# Load the .env file
-if os.path.exists(env_path):
-    load_dotenv(env_path)
-    print(f"✅ Loaded .env from: {env_path}")
-else:
-    print(f"⚠️ .env file not found at {env_path}")
-
-# Read the API key
-WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
-
-# Debugging
-print("✅ Loaded Weather API Key:", WEATHER_API_KEY)
+# API credentials are loaded from environment variables via python-decouple.
+WEATHER_API_KEY = config('WEATHER_API_KEY', default='')
 
 
 
