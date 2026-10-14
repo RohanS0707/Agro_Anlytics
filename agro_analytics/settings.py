@@ -155,6 +155,9 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # API credentials are loaded from environment variables via python-decouple.
 WEATHER_API_KEY = config('WEATHER_API_KEY', default='')
+NEWS_API_KEY = config('NEWS_API_KEY', default='')
+GOOGLE_PLACES_API_KEY = config('GOOGLE_PLACES_API_KEY', default='')
+GOOGLE_DISTANCE_API_KEY = config('GOOGLE_DISTANCE_API_KEY', default='')
 
 
 
