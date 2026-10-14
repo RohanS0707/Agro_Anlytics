@@ -86,7 +86,7 @@ from django.conf import settings
 @login_required
 def weather(request):
     context = {
-        'api_key': settings.WEATHER_API_KEY  # should be 74bd...
+        'api_key': settings.WEATHER_API_KEY
     }
     return render(request, 'weather.html', context)
 
@@ -116,13 +116,11 @@ import requests
 from django.shortcuts import render
 
 def agriculture_news(request):
-    api_key = '890637d3fe1b4201bd8391235c1eb5e4'
+    api_key = settings.NEWS_API_KEY
     url = f'https://newsapi.org/v2/everything?q=agriculture+india&sortBy=publishedAt&language=en&apiKey={api_key}'
 
     response = requests.get(url)
     data = response.json()
-    
-    print("DEBUG: API Response Data >>>", data)
 
     articles = data.get('articles', [])
 
@@ -139,8 +137,8 @@ def get_nearby_markets(request):
     lat = request.GET.get('lat')
     lon = request.GET.get('lon')
 
-    PLACES_API_KEY = 'AIzaSyATY3fJp8NEmUo0-MtpwuZDs-KyS5pKqHg'
-    DISTANCE_API_KEY = 'AIzaSyCvsjmf00GHyqKBVpUciY89FhzMDj0ZJTc'
+    PLACES_API_KEY = settings.GOOGLE_PLACES_API_KEY
+    DISTANCE_API_KEY = settings.GOOGLE_DISTANCE_API_KEY
 
     try:
         # Fetch nearby places (supermarkets) from Google Places API
@@ -148,7 +146,6 @@ def get_nearby_markets(request):
         places_res = requests.get(places_url)
         places_res.raise_for_status()  # Handle any HTTP errors
         places_data = places_res.json()
-        print("DEBUG: Places Data >>>", places_data)
 
         nearby_markets = []
 
@@ -162,7 +159,6 @@ def get_nearby_markets(request):
             distance_res = requests.get(distance_url)
             distance_res.raise_for_status()
             distance_data = distance_res.json()
-            print("DEBUG: Distance Data >>>", distance_data)
 
             # Extract distance and duration information
             distance = distance_data['rows'][0]['elements'][0]['distance']['text']
